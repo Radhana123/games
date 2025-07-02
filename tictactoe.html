@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic tac Toe</title>
+     <link rel="stylesheet" href="styletic.css" />
+</head>
+<body>
+
+    <main>
+    <h1>Tic Tac Toe</h1>
+
+    <div class="mode-select">
+      <label>Mode: </label>
+      <select id="gameMode">
+        <option value="pvp">Player vs Player</option>
+        <option value="pvc">Player vs Computer</option>
+      </select>
+    </div>
+
+    <div class="difficulty-select">
+      <label>Difficulty: </label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+
+    <div class="msg hide">
+      <p id="msg1"></p>
+      <button id="Restart">New Game</button>
+    </div>
+
+    <div class="container">
+      <div class="game">
+        <button class="box"></button><button class="box"></button><button class="box"></button>
+        <button class="box"></button><button class="box"></button><button class="box"></button>
+        <button class="box"></button><button class="box"></button><button class="box"></button>
+      </div>
+    </div>
+
+    <button id="resetBtn">Reset Game</button>
+  </main>
+
+    <!-- <main>
+    <h1>Tic Tac Toe</h1>
+    <div class="msg hide">
+        <p id="msg1">Winner</p>
+    <button id="Restart">New Game</button>
+    </div>
+    <div class="container">
+        <div class="game">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+    <button id="resetBtn">Reset Game</button>
+    <script src="second.js"></script>
+    <script src="script.js"></script>
+    <script src="tictactoe.js"></script>
+    </main> -->
+
+</body>
+</html>
