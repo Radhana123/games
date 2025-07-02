@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Connect Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(7, 60px);
+      grid-template-rows: repeat(6, 60px);
+      gap: 5px;
+      justify-content: center;
+      margin: 30px auto;
+    }
+
+    .cell {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #444;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .red {
+      background-color: red;
+    }
+
+    .yellow {
+      background-color: yellow;
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    .win {
+      color: limegreen;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Color Connect 4</h1>
+  <div class="board" id="board"></div>
+  <div class="info" id="info">Player Red's Turn</div>
+  <button onclick="resetGame()">Restart</button>
+
+  <script>
+    const ROWS = 6;
+    const COLS = 7;
+    const board = document.getElementById("board");
+    const info = document.getElementById("info");
+
+    let currentPlayer = "red";
+    let grid = [];
+
+    function createBoard() {
+      grid = [];
+      board.innerHTML = "";
+
+      for (let r = 0; r < ROWS; r++) {
+        const row = [];
+        for (let c = 0; c < COLS; c++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          board.appendChild(cell);
+          row.push(cell);
+        }
+        grid.push(row);
+      }
+
+      board.addEventListener("click", handleClick);
+    }
+
+    function handleClick(e) {
+      if (!e.target.classList.contains("cell")) return;
+
+      const col = +e.target.dataset.col;
+      for (let r = ROWS - 1; r >= 0; r--) {
+        const cell = grid[r][col];
+        if (!cell.classList.contains("red") && !cell.classList.contains("yellow")) {
+          cell.classList.add(currentPlayer);
+          if (checkWin(r, col)) {
+            info.textContent = `Player ${capitalize(currentPlayer)} Wins!`;
+            info.classList.add("win");
+            board.removeEventListener("click", handleClick);
+          } else {
+            currentPlayer = currentPlayer === "red" ? "yellow" : "red";
+            info.textContent = `Player ${capitalize(currentPlayer)}'s Turn`;
+            info.classList.remove("win");
+          }
+          break;
+        }
+      }
+    }
+
+    function checkWin(row, col) {
+      return (
+        checkDirection(row, col, 0, 1) || // horizontal
+        checkDirection(row, col, 1, 0) || // vertical
+        checkDirection(row, col, 1, 1) || // diagonal down-right
+        checkDirection(row, col, 1, -1)   // diagonal down-left
+      );
+    }
+
+    function checkDirection(row, col, rowDir, colDir) {
+      let count = 1;
+
+      count += countInDirection(row, col, rowDir, colDir);
+      count += countInDirection(row, col, -rowDir, -colDir);
+
+      return count >= 4;
+    }
+
+    function countInDirection(row, col, rowDir, colDir) {
+      let r = row + rowDir;
+      let c = col + colDir;
+      let count = 0;
+
+      while (
+        r >= 0 &&
+        r < ROWS &&
+        c >= 0 &&
+        c < COLS &&
+        grid[r][c].classList.contains(currentPlayer)
+      ) {
+        count++;
+        r += rowDir;
+        c += colDir;
+      }
+
+      return count;
+    }
+
+    function resetGame() {
+      currentPlayer = "red";
+      info.textContent = "Player Red's Turn";
+      info.classList.remove("win");
+      createBoard();
+    }
+
+    function capitalize(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
+    createBoard();
+  </script>
+</body>
+
+</html>
